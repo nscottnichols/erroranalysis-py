@@ -66,7 +66,6 @@ More advanced usage of the Error Analysis package can be achieved by importing t
 The compressibility may be a measure of interest and can be calculated by
 <img src="https://render.githubusercontent.com/render/math?math=%5CHuge%20%5Ckappa_T%20%3D%20%5Cfrac%7B1%7D%7B%5Crho_0%20k_%5Cmathrm%7BB%7D%20T%7D%5Cfrac%7B%5Clangle%20N%5E2%5Crangle%20-%20%5Clangle%20N%5Crangle%5E2%7D%7B%5Clangle%20N%5Crangle%7D">
 
-\begin{equation}\kappa_T = \frac{1}{\rho_0 k_\mathrm{B} T}\frac{\langle N^2\rangle - \langle N\rangle^2}{\langle N\rangle}\end{equation}
 where <img src="https://render.githubusercontent.com/render/math?math=%5Crho_0%20%3D%20%5Cfrac%7B%5Clangle%20N%5Crangle%7D%7BV%7D">
 is the average particle density. Notice the compressibility is a function of averages. Jackknife or bootstrap resampling of the data may give a better measure of the error in the compressibility. Start with the compressibility as a function:
 
