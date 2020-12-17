@@ -56,8 +56,8 @@ def main(argv=None):
     if args.labels:
         labels = [l.strip() for l in args.labels.split(",")]
         if len(labels) != len(args.filename):
-            print("Length of labels does not match length of filenames")
-            raise
+            msg = "Length of labels does not match length of filenames"
+            raise ValueError(msg)
 
     if args.custom_header:
         custom_header = [l.strip() for l in args.custom_header.split(",")]
@@ -81,9 +81,6 @@ def main(argv=None):
             bfig3, bax3 = plt.subplots(dpi=args.dpi)
             bfig4, bax4 = plt.subplots(dpi=args.dpi)
 
-        if args.estimator == "":
-            print("Specify an estimator (--estimator ???)")
-            raise
 
         for i,f in enumerate(args.filename):
             if args.labels:
@@ -92,9 +89,12 @@ def main(argv=None):
                 label = os.path.basename(f)
 
             data = np.genfromtxt(f,names=custom_header,skip_header=args.skip_header)
+            if args.estimator == "":
+                msg = "Specify an estimator (--estimator {})".format(data.dtype.names)
+                raise ValueError(msg)
             if not args.estimator in data.dtype.names:
-                print("Estimator {} not in column headers {} for file {}".format(args.estimator, data.dtype.names,f))
-                raise
+                msg = "Estimator {} not in column headers {} for file {}".format(args.estimator, data.dtype.names,f)
+                raise ValueError(msg)
 
             _avg, _err, fig, ax = averageplot_method(
                 data[args.estimator],

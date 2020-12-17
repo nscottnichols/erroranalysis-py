@@ -14,8 +14,8 @@ def bootstrap_on_function(func,*argv,bootstrap_size=100,**kwargs):
     N = argv[0].shape[0]
     for data in argv:
         if data.shape[0] != N:
-            print("Data must have same length")
-            raise
+            msg = "Data must have same length"
+            raise ValueError(msg)
 
     data_array = np.array(argv)
 
@@ -40,8 +40,8 @@ def jackknife_on_function(func,*argv,**kwargs):
     N = argv[0].shape[0]
     for data in argv:
         if data.shape[0] != N:
-            print("Data must have same length")
-            raise
+            msg = "Data must have same length"
+            raise ValueError(msg)
     data_array = np.array(argv)
     _jackknife_avg = ((data_array.sum(axis=1) - data_array.T)/(N-1)).T
     
@@ -55,8 +55,8 @@ def jackknife_on_function(func,*argv,**kwargs):
 ## Binning Analysis ############################################################
 def binning_analysis_data(raw_data,skip=0,method="jackknife",bootstrap_size=100,running_window=1):
     if method not in ["jackknife","bootstrap","cumulative","running"]:
-        print("Choose method from: jackknife, bootstrap, cumulative, running")
-        raise
+        msg = "Choose method from: jackknife, bootstrap, cumulative, running"
+        raise ValueError(msg)
     if method == "running":
         print("WARNING: Binning analysis will use error from last window of running average.")
     N_raw = raw_data.shape[0] - skip
@@ -104,24 +104,24 @@ def binning_analysis(raw_data,skip=0,method="jackknife",bootstrap_size=100,runni
 
 def binning_analysis_on_function_data(func,*argv,skip=0,method="jackknife",bootstrap_size=100,running_window=1,propogated_error_func=None,**kwargs):
     if method not in ["jackknife","bootstrap","cumulative","running"]:
-        print("Choose method from: jackknife, bootstrap, cumulative, running")
-        raise
+        msg = "Choose method from: jackknife, bootstrap, cumulative, running"
+        raise ValueError(msg)
     if method in ["cumulative","running"]:
         print("WARNING: Reccomend either jackknife or bootstrap method as correlations in averages can cause misleading errorbars.")
         if method == "running":
             print("WARNING: Binning analysis will use error from last window of running average.")
         if propogated_error_func == None:
-            print("Please provide propogated error function as <propogated_error_func>.")
-            raise
+            msg = "Please provide propogated error function as <propogated_error_func>."
+            raise ValueError(msg)
     N_raw = argv[0].shape[0]
     for data in argv:
         if data.shape[0] != N_raw:
-            print("Data must have same length")
-            raise
+            msg = "Data must have same length"
+            raise ValueError(msg)
     N_raw -= skip
     if N_raw < 1:
-        print(f"skip greater than data length: {N_raw + skip}")
-        raise
+        msg = f"skip greater than data length: {N_raw + skip}"
+        raise ValueError(msg)
 
     max_bin_level = np.log2(N_raw).astype(int)
     binned_avg = np.zeros(max_bin_level)
@@ -180,8 +180,8 @@ def binning_analysis_plot_fig(max_bin_level,binned_err,fig,ax,label=None):
 ## Pimcplot  ###################################################################
 def averageplot_data(data,method="jackknife",bootstrap_size=100,running_window=1):
     if method not in ["jackknife","bootstrap","cumulative","running"]:
-        print("Choose averageplot method from: jackknife, bootstrap, cumulative, running")
-        raise
+        msg = "Choose averageplot method from: jackknife, bootstrap, cumulative, running"
+        raise ValueError(msg)
     N = data.shape[0]
     _avg = np.zeros(N)
     _err = np.zeros(N)
@@ -223,18 +223,18 @@ def averageplot_method(raw_data,skip=0,bin_size=1,method="jackknife",bootstrap_s
 
 def averageplot_on_function_data(func,*argv,method="jackknife",bootstrap_size=100,running_window=1,propogated_error_func=None,**kwargs):
     if method not in ["jackknife","bootstrap","cumulative","running"]:
-        print("Choose method from: jackknife, bootstrap, cumulative, running")
-        raise
+        msg = "Choose method from: jackknife, bootstrap, cumulative, running"
+        raise ValueError(msg)
     if method in ["cumulative","running"]:
         print("WARNING: Reccomend either jackknife or bootstrap method as correlations in averages can cause misleading errorbars.")
         if propogated_error_func == None:
-            print("Please provide propogated error function as <propogated_error_func>.")
-            raise
+            msg = "Please provide propogated error function as <propogated_error_func>."
+            raise ValueError(msg)
     N = argv[0].shape[0]
     for data in argv:
         if data.shape[0] != N:
-            print("Data must have same length")
-            raise
+            msg = "Data must have same length"
+            raise ValueError(msg)
     
     data_array = np.array(argv)
     _avg = np.zeros(N)
@@ -266,8 +266,8 @@ def averageplot_on_function_method(func,*argv,skip=0,bin_size=1,method="jackknif
     N = argv[0].shape[0]
     for data in argv:
         if data.shape[0] != N:
-            print("Data must have same length")
-            raise
+            msg = "Data must have same length"
+            raise ValueError(msg)
             
     data_binned = [bin_data(raw_data,skip=skip,bin_size=bin_size) for raw_data in argv]
     skip_binned = skip//bin_size + 1
@@ -392,156 +392,3 @@ def kurtosis_error(N,N2,N3,N4,N_err,N2_err,N3_err,N4_err,**kwargs):
     dN4_ = (N2 - N**2)**(-2)
     return np.sqrt((dN_*N_err)**2 + (dN2_*N2_err)**2 + (dN3_*N3_err)**2 + (dN4_*N4_err)**2)
 
-## Old Versions ################################################################
-
-def bootstrap_old(data,bootstrap_size=100):
-    N = data.shape[0]
-
-    _bootstrap_avg = data[np.random.randint(N, size=(N,bootstrap_size))].mean(axis=1)
-    _bootstrap_avg = np.zeros(bootstrap_size)
-
-    for i in range(bootstrap_size):
-        bs_idx = np.random.randint(N, size=N)
-        _bootstrap_avg[i] = np.mean(data[bs_idx])
-    bootstrap_avg = np.mean(_bootstrap_avg)
-    bootstrap_err = np.sqrt((N/(N - 1))*(np.mean(_bootstrap_avg**2) - bootstrap_avg**2))
-    return bootstrap_avg, bootstrap_err
-
-def bootstrap_on_function_old(func,*argv,bootstrap_size=100,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-    _bootstrap_avg = np.zeros((bootstrap_size,len(argv)))
-
-    for i in range(bootstrap_size):
-        bs_idx = np.random.randint(N, size=N)
-        for j,data in enumerate(argv):
-            _bootstrap_avg[i,j] = np.mean(data[bs_idx])
-    _func_result = func(*np.hsplit(_bootstrap_avg,len(argv)),**kwargs)
-    bootstrap_avg = np.mean(_func_result)
-    bootstrap_avg2 = np.mean(_func_result**2)
-    bootstrap_err = np.sqrt((N/(N - 1))*(bootstrap_avg2 - bootstrap_avg**2))
-    return bootstrap_avg, bootstrap_err
-
-def averageplot_bootstrap_on_function_data_old(func,*argv,bootstrap_size=100,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-
-    data_array = np.array(argv)
-    bootstrap_avg = np.zeros(N)
-    bootstrap_err = np.zeros(N)
-
-    bootstrap_avg[0] = func(*[data[0] for data in argv],**kwargs)
-    for i in range(N - 1):
-        bootstrap_avg[i+1], bootstrap_err[i+1] = bootstrap_on_function_old(func,*[data[:i+2] for data in argv],bootstrap_size=bootstrap_size,**kwargs)
-    return bootstrap_avg, bootstrap_err
-
-def averageplot_bootstrap_on_function_old(func,*argv,bootstrap_size=100,skip=0,bin_size=1,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-
-    data_binned = [bin_data(raw_data,skip=skip,bin_size=bin_size) for raw_data in argv]
-    skip_binned = skip//bin_size + 1
-
-    bootstrap_avg, bootstrap_err = averageplot_bootstrap_on_function_data_old(func,*data_binned,bootstrap_size=bootstrap_size,**kwargs)
-
-    fig,ax = averageplot(bootstrap_avg,bootstrap_err,skip=skip_binned,**kwargs)
-    return bootstrap_avg, bootstrap_err, fig, ax
-
-def averageplot_jackknife_data_old(data):
-    N = data.shape[0]
-    jackknife_avg = np.zeros(N)
-    jackknife_err = np.zeros(N)
-    
-    jackknife_avg[0] = data[0]
-    for i in range(N - 1):
-        jackknife_avg[i+1], jackknife_err[i+1] = jackknife_old(data[:i+2])
-    return jackknife_avg, jackknife_err
-
-def averageplot_jackknife_old(raw_data,skip=0,bin_size=1,**kwargs):
-    data_binned = bin_data(raw_data,skip=skip,bin_size=bin_size)
-    skip_binned = skip//bin_size + 1
-
-    jackknife_avg, jackknife_err = averageplot_jackknife_data_old(data_binned)
-
-    fig,ax = averageplot(jackknife_avg,jackknife_err,skip=skip_binned,**kwargs)
-    return jackknife_avg, jackknife_err, fig, ax
-
-def averageplot_jackknife_on_function_data_old(func,*argv,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-            
-    jackknife_avg = np.zeros(N)
-    jackknife_err = np.zeros(N)
-    
-    jackknife_avg[0] = func(*[data[0] for data in argv],**kwargs)
-    for i in range(N - 1):
-        jackknife_avg[i+1], jackknife_err[i+1] = jackknife_on_function_old(func,*[data[:i+2] for data in argv],**kwargs)
-    return jackknife_avg, jackknife_err
-
-
-def averageplot_jackknife_on_function_old(func,*argv,skip=0,bin_size=1,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-            
-    data_binned = [bin_data(raw_data,skip=skip,bin_size=bin_size) for raw_data in argv]
-    skip_binned = skip//bin_size + 1
-    
-    jackknife_avg, jackknife_err = averageplot_jackknife_on_function_data_old(func,*data_binned,**kwargs)
-    
-    fig,ax = averageplot(jackknife_avg,jackknife_err,skip=skip_binned,**kwargs)
-    return jackknife_avg, jackknife_err, fig, ax
-
-def jackknife_old(data):
-    N = data.shape[0]
-    _jackknife_avg = np.zeros_like(data)
-    
-    jn_idx = np.ones(N, dtype=bool)
-    jn_idx[0] = False
-    
-    _jackknife_avg[0] = np.mean(data[jn_idx])
-    for i in range(N - 1):
-        jn_idx[i] = True
-        jn_idx[i+1] = False
-        _jackknife_avg[i+1] = np.mean(data[jn_idx])
-    jackknife_avg = np.mean(_jackknife_avg)
-    jackknife_err = np.sqrt((N - 1)*(np.mean(_jackknife_avg**2) - jackknife_avg**2))
-    return jackknife_avg, jackknife_err
-
-def jackknife_on_function_old(func,*argv,**kwargs):
-    N = argv[0].shape[0]
-    for data in argv:
-        if data.shape[0] != N:
-            print("Data must have same length")
-            raise
-    _jackknife_avg = np.zeros((N,len(argv)))
-    
-    jn_idx = np.ones(N, dtype=bool)
-    
-    for j,data in enumerate(argv):
-        jn_idx[0] = False
-        _jackknife_avg[0,j] = np.mean(data[jn_idx])
-        for i in range(N - 1):
-            jn_idx[i] = True
-            jn_idx[i+1] = False
-            _jackknife_avg[i+1,j] = np.mean(data[jn_idx])
-        jn_idx[-1] = True
-    _func_result = func(*np.hsplit(_jackknife_avg,len(argv)),**kwargs)
-    jackknife_avg = np.mean(_func_result)
-    jackknife_avg2 = np.mean(_func_result**2)
-    jackknife_err = np.sqrt((N - 1)*(jackknife_avg2 - jackknife_avg**2))
-    return jackknife_avg, jackknife_err
