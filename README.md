@@ -23,23 +23,23 @@ For example, the following command generates plots for the `Nmols_2` estimator (
 ```
 ea --skip_header 1 --estimator Nmols_2 --savefig argon_MCM41_-12.68.png examples/argon_MCM41_-12.68.out.prp
 ```
-![png](../images/argon_MCM41_-12.68_jackknife_average.png)
-![png](../images/argon_MCM41_-12.68_jackknife_kurtosis.png)
-![png](../images/argon_MCM41_-12.68_jackknife_fluctuations.png)
-![png](../images/argon_MCM41_-12.68_jackknife_skew.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_jackknife_average.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_jackknife_kurtosis.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_jackknife_fluctuations.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_jackknife_skew.png)
 Note that Error Analysis will attempt to read the headers for each column of data in the data files provided and the estimator of interest should be specified from the header. In the example, the header for the data is on the second line so `--skip_header 1` is specified to skip the first line of the data file before attempting to read the header. A custom header can be provided if the header is missing on the datafiles and multiple data files are supported as well. Here several options are shown off:
 ```
 ea --skip 5000 --bin_size 5 --skip_header 1 --custom_header "estimator_1,estimator_2,estimator_3,estimator_4,estimator_5" --estimator estimator_4 --pretty_estimator_name "N_\mathrm{Ar}" --savefig two_files_at_once.png --labels "file_1,file_2" --legend examples/argon_MCM41_-12.68.out.prp examples/argon_MCM41_-13.34.out.prp
 ```
-![png](../images/two_files_at_once_jackknife_average.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/two_files_at_once_jackknife_average.png)
 Binning analysis can be performed by adding the `--binning_analysis` flag:
 ```
 ea --skip 15000 --skip_header 1 --estimator Nmols_2 --binning_analysis --savefig argon_MCM41_-12.68.png examples/argon_MCM41_-12.68.out.prp
 ```
-![png](../images/argon_MCM41_-12.68_binning_jackknife_average.png)
-![png](../images/argon_MCM41_-12.68_binning_jackknife_kurtosis.png)
-![png](../images/argon_MCM41_-12.68_binning_jackknife_fluctuations.png)
-![png](../images/argon_MCM41_-12.68_binning_jackknife_skew.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_binning_jackknife_average.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_binning_jackknife_kurtosis.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_binning_jackknife_fluctuations.png)
+![png](https://raw.githubusercontent.com/nscottnichols/erroranalysis-py/main/images/argon_MCM41_-12.68_binning_jackknife_skew.png)
 ```
 Average
 autocorrelation time: 29.3695548682474
