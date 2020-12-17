@@ -5,7 +5,9 @@ import sys
 import os
 
 def create_parser():
-    parser = argparse.ArgumentParser(description='Plots the average and error of an estimator as a function of Monte Carlo bins (optionally performs binning analysis).')
+    parser = argparse.ArgumentParser(description='Plots the average and error of an estimator as a function of Monte Carlo bins (optionally performs binning analysis).',
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter
+            )
     parser.add_argument('--skip', type=int, default=0,
                         help='Skip <skip> number of bins before averaging')
     parser.add_argument('--estimator', type=str, default="",
