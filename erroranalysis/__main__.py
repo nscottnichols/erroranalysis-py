@@ -235,10 +235,50 @@ def main(argv=None):
             bax3.set_ylabel(r"$\sigma_{{\tilde{{\mu}}_{{3}}^{{{}}}}}$".format(pname))
             bax4.set_ylabel(r"$\sigma_{{\kappa_{{{}}}}}$".format(pname))
 
-            bax.set_title(r"Average $\tau = {:d}$ $\mu_\mathrm{{C.F.}} = {:.2f}$".format(int(estimator_autocorrelation_time)+1, estimator_convergence_factor))
-            bax2.set_title(r"Fluctuations $\tau = {:d}$ $\mu_\mathrm{{C.F.}} = {:.2f}$".format(int(fluctuations_autocorrelation_time)+1, fluctuations_convergence_factor))
-            bax3.set_title(r"Skew $\tau = {:d}$ $\mu_\mathrm{{C.F.}} = {:.2f}$".format(int(skew_autocorrelation_time)+1, skew_convergence_factor))
-            bax4.set_title(r"Kurtosis $\tau = {:d}$ $\mu_\mathrm{{C.F.}} = {:.2f}$".format(int(kurtosis_autocorrelation_time)+1, kurtosis_convergence_factor))
+            try:
+                tau_fmt = int(estimator_autocorrelation_time) + 1
+            except:
+                tau_fmt = "\mathrm{NaN}"
+            try:
+                test_nan = int(estimator_convergence_factor)
+                cf_fmt = estimator_convergence_factor
+            except:
+                cf_fmt = "\mathrm{NaN}"
+            _title = r"Average $\tau = {}$ $\mu_\mathrm{{C.F.}} = {}$".format(tau_fmt,cf_fmt)
+            bax.set_title(_title)
+            try:
+                tau_fmt = int(fluctuations_autocorrelation_time) + 1
+            except:
+                tau_fmt = "\mathrm{NaN}"
+            try:
+                test_nan = int(fluctuations_convergence_factor)
+                cf_fmt = fluctuations_convergence_factor
+            except:
+                cf_fmt = "\mathrm{NaN}"
+            _title = r"Fluctuations $\tau = {}$ $\mu_\mathrm{{C.F.}} = {}$".format(tau_fmt,cf_fmt)
+            bax2.set_title(_title)
+            try:
+                tau_fmt = int(skew_autocorrelation_time) + 1
+            except:
+                tau_fmt = "\mathrm{NaN}"
+            try:
+                test_nan = int(skew_convergence_factor)
+                cf_fmt = skew_convergence_factor
+            except:
+                cf_fmt = "\mathrm{NaN}"
+            _title = r"Skew $\tau = {}$ $\mu_\mathrm{{C.F.}} = {}$".format(tau_fmt,cf_fmt)
+            bax3.set_title(_title)
+            try:
+                tau_fmt = int(kurtosis_autocorrelation_time) + 1
+            except:
+                tau_fmt = "\mathrm{NaN}"
+            try:
+                test_nan = int(kurtosis_convergence_factor)
+                cf_fmt = kurtosis_convergence_factor
+            except:
+                cf_fmt = "\mathrm{NaN}"
+            _title = r"Kurtosis $\tau = {}$ $\mu_\mathrm{{C.F.}} = {}$".format(tau_fmt,cf_fmt)
+            bax4.set_title(_title)
 
             if args.legend:
                 bax.legend()
