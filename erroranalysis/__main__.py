@@ -30,7 +30,7 @@ def create_parser():
                         help='Name for saving plots. Will prepend extension with plot type and <average_method>. i.e. `--savefig estimator.png` will save a binning analysis plot using jackknife as `estimator_binning-analysis_jackknife.png`')
     parser.add_argument('--mplstylefile', type=str, default="default",
                         help='Location of stylefile to use with plotting')
-    parser.add_argument('--dpi', type=float, default=400.0,
+    parser.add_argument('--dpi', type=float, default=None,
                         help='DPI for plots.')
 
     parser.add_argument('--bin_size', type=int, default=1,
