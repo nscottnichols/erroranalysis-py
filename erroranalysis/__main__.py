@@ -18,7 +18,7 @@ def create_parser():
                         help='Skip <skip> number of lines in <filename> before attempting to read the file')
     parser.add_argument('--dtype', type=str, default=None,
                         help='`dtype` passed to numpy.genfromtxt()')
-    parser.add_argument('--deletechars', type=str, default" !#$%&'()*+, -./:;<=>?@[\]^{|}~",
+    parser.add_argument('--deletechars', type=str, default=" !#$%&'()*+, -./:;<=>?@[\]^{|}~",
                         help='`deletechars` passed to numpy.genfromtxt()')
     parser.add_argument('--pretty_estimator_name', type=str, default="",
                         help='Name of <estimator> formatted for matplotlib plot labels')
