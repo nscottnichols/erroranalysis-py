@@ -16,6 +16,10 @@ def create_parser():
                         help='A comma separated header for <filename> if one does not exist in the file with the same number of headings as columns of data')
     parser.add_argument('--skip_header', type=int, default=0,
                         help='Skip <skip> number of lines in <filename> before attempting to read the file')
+    parser.add_argument('--dtype', type=str, default=None,
+                        help='`dtype` passed to numpy.genfromtxt()')
+    parser.add_argument('--deletechars', type=str, default" !#$%&'()*+, -./:;<=>?@[\]^{|}~",
+                        help='`deletechars` passed to numpy.genfromtxt()')
     parser.add_argument('--pretty_estimator_name', type=str, default="",
                         help='Name of <estimator> formatted for matplotlib plot labels')
     parser.add_argument('--legend', action='store_true',
@@ -90,7 +94,7 @@ def main(argv=None):
             else:
                 label = os.path.basename(f)
 
-            data = np.genfromtxt(f,names=custom_header,skip_header=args.skip_header)
+            data = np.genfromtxt(f,names=custom_header,skip_header=args.skip_header,dtype=args.dtype,deletechars=args.deletechars)
             if args.estimator == "":
                 msg = "Specify an estimator (--estimator {})".format(data.dtype.names)
                 raise ValueError(msg)
